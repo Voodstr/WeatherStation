@@ -1,16 +1,22 @@
 package ru.voodster.weatherstation
 
+import android.graphics.Color
 import android.os.Bundle
 
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
 
 import ru.voodster.weatherstation.databinding.FragmentIndicationBinding
-import ru.voodster.weatherstation.weatherapi.WeatherDataClass
+import ru.voodster.weatherstation.weatherapi.Weather
+import ru.voodster.weatherstation.weatherapi.WeatherData
+import java.text.SimpleDateFormat
+import java.util.*
 
 import kotlin.collections.ArrayList
 
@@ -20,13 +26,40 @@ class IndicationFragment : Fragment() {
     private var _binding: FragmentIndicationBinding? = null
     private val binding get() = _binding!!
 
-    private var indTemp = 0
-    private var indHum = 0
-    private var indPress = 0
-    private var indDate: Long = 0
+    private val viewModel : WeatherViewModel by viewModels()
+
+    private var weatherNum = Weather(0,0,0,0,0,0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setWeather(weatherNum)
+
+        viewModel.weather.observe(viewLifecycleOwner, { weather -> setWeather(weather) })
+        viewModel.error.observe(viewLifecycleOwner, {error -> Toast.makeText(context, error, Toast.LENGTH_SHORT).show()})
+
+    }
+
+    fun bind(){
+
+    }
+
+    fun setWeather(weather: Weather){
+        weatherNum = weather
+        val sdf = SimpleDateFormat("dd/MM HH:mm", Locale.ROOT)
+        binding.humView.text = weatherNum.Hum.toString()+"%"
+        binding.tempView.text = (weatherNum.Temp.toDouble().div(10.0)).toString() +" C"
+        binding.pressView.text = weatherNum.Press.toString()
+        binding.dateView.text = sdf.format(Date(weatherNum.Date.toLong().times(1000)))
+        if (weatherNum.Temp >= 0) {
+            binding.tempView.setTextColor(Color.RED)
+        } else binding.tempView.setTextColor(Color.BLUE)
 
     }
 
@@ -40,7 +73,7 @@ class IndicationFragment : Fragment() {
 
         _binding = FragmentIndicationBinding.inflate(inflater, container, false)
         binding.refreshBtn.setOnClickListener {
-
+            viewModel.onGetDataClick()
         }
         return binding.root
     }
@@ -67,10 +100,10 @@ class IndicationFragment : Fragment() {
             //    Toast.makeText(this@FragmentI, "Certificate is needed", Toast.LENGTH_SHORT).show()
             }
             setValues()
-        }
-  */
+        }*/
 
-  /*  private suspend fun setValues() = withContext(Dispatchers.Main) {
+
+    /*private suspend fun setValues() = withContext(Dispatchers.Main) {
             //val sdf = SimpleDateFormat("dd/MM HH:mm", Locale.ROOT)
         val url = "https://db.shs.com.ru/tst/json.lsp"
         val result = withContext(Dispatchers.IO){
@@ -85,7 +118,7 @@ class IndicationFragment : Fragment() {
             if (weatherData[0].Temp!! >= 0) {
                 binding.tempView.setTextColor(Color.RED)
             } else binding.tempView.setTextColor(Color.BLUE)
-        }*/
+        } */
 
 }
 

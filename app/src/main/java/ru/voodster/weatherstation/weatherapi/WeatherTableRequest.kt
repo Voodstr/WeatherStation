@@ -5,5 +5,5 @@ import retrofit2.http.*
 
 interface WeatherTableRequest {
     @GET("/tst/json.lsp?rows=20")
-    fun getData():Call<WeatherDataClass>
+    fun getData():Call<Weather>
 }
