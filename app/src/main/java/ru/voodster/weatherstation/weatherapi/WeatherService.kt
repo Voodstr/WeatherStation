@@ -4,8 +4,8 @@ import retrofit2.Call
 import retrofit2.http.*
 
 
-interface CurrentWeatherRequest{
+interface WeatherService{
 
-@GET("/tst/json.lsp")
-fun getData():Call<WeatherDataClass>
+@GET("tst/json.lsp")
+fun getWeather():Call<Weather>
 }
