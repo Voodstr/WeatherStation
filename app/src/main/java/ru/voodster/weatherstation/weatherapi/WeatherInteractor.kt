@@ -12,15 +12,13 @@ class WeatherInteractor(private val weatherService: WeatherService, private val 
 
     fun getWeather( callback: GetWeatherCallback) {
 
-        weatherService.getWeather().enqueue(object : Callback<Weather> {
+        weatherService.getData().enqueue(object : Callback<Weather> {
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
                 if (response.isSuccessful) {
                     weatherData.addToCache(response.body()!!)
-                    Log.d("shs response",response.code().toString() + "")
                     callback.onSuccess(weatherData.cachedOrFakeWeather)
                 } else {
                     callback.onError(response.code().toString() + "")
-                    Log.d("shs response",response.code().toString() + "")
                 }
             }
 
@@ -30,8 +28,32 @@ class WeatherInteractor(private val weatherService: WeatherService, private val 
         })
     }
 
+    fun getWeatherTable(callback: GetWeatherTableCallBack) {
+
+        weatherService.getTableData().enqueue(object : Callback<List<Weather>> {
+            override fun onResponse(call: Call<List<Weather>>, response: Response<List<Weather>>) {
+                if (response.isSuccessful) {
+                    weatherData.addToTable(response.body()!!)
+
+                    callback.onSuccess(weatherData.cachedOrFakeTable)
+                } else {
+                    callback.onError(response.code().toString() + "")
+                }
+            }
+
+            override fun onFailure(call: Call<List<Weather>>, t: Throwable) {
+                callback.onError("Network error probably...")
+            }
+        })
+    }
+
     interface GetWeatherCallback {
         fun onSuccess(weather: Weather)
+        fun onError(error: String)
+    }
+
+    interface GetWeatherTableCallBack {
+        fun onSuccess(tableWeather: List<Weather>)
         fun onError(error: String)
     }
 }

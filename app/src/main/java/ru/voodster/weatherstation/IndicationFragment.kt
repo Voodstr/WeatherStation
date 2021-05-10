@@ -8,17 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.*
 
 import ru.voodster.weatherstation.databinding.FragmentIndicationBinding
 import ru.voodster.weatherstation.weatherapi.Weather
-import ru.voodster.weatherstation.weatherapi.WeatherData
 import java.text.SimpleDateFormat
 import java.util.*
-
-import kotlin.collections.ArrayList
 
 class IndicationFragment : Fragment() {
 
@@ -26,41 +22,38 @@ class IndicationFragment : Fragment() {
     private var _binding: FragmentIndicationBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel : WeatherViewModel by viewModels()
+    private val viewModel : IndicationViewModel by viewModels()
 
     private var weatherNum = Weather(0,0,0,0,0,0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setWeather(weatherNum)
-
-        viewModel.weather.observe(viewLifecycleOwner, { weather -> setWeather(weather) })
+       viewModel.onGetData()
+        viewModel.weather.observe(viewLifecycleOwner, { weather ->
+            setWeather(weather)
+        })
         viewModel.error.observe(viewLifecycleOwner, {error -> Toast.makeText(context, error, Toast.LENGTH_SHORT).show()})
 
     }
 
-    fun bind(){
 
-    }
-
-    fun setWeather(weather: Weather){
+    private fun setWeather(weather: Weather){
+        binding.ProgressBar.visibility = View.VISIBLE
         weatherNum = weather
         val sdf = SimpleDateFormat("dd/MM HH:mm", Locale.ROOT)
-        binding.humView.text = weatherNum.Hum.toString()+"%"
-        binding.tempView.text = (weatherNum.Temp.toDouble().div(10.0)).toString() +" C"
-        binding.pressView.text = weatherNum.Press.toString()
-        binding.dateView.text = sdf.format(Date(weatherNum.Date.toLong().times(1000)))
-        if (weatherNum.Temp >= 0) {
+        binding.humView.text = "${weatherNum.hum.toString()} %"
+        binding.tempView.text = (weatherNum.temp.toDouble().div(10.0)).toString() +" C"
+        binding.pressView.text = weatherNum.press.toString()
+        binding.dateView.text = sdf.format(Date(weatherNum.date.toLong().times(1000)))
+        if (weatherNum.temp >= 0) {
             binding.tempView.setTextColor(Color.RED)
         } else binding.tempView.setTextColor(Color.BLUE)
-
+        binding.ProgressBar.visibility = View.GONE
     }
 
     override fun onCreateView(
@@ -73,7 +66,7 @@ class IndicationFragment : Fragment() {
 
         _binding = FragmentIndicationBinding.inflate(inflater, container, false)
         binding.refreshBtn.setOnClickListener {
-            viewModel.onGetDataClick()
+            viewModel.onGetData()
         }
         return binding.root
     }

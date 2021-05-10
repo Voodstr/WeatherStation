@@ -21,6 +21,7 @@ class WeatherUpdater(private val service: WeatherService): LifecycleObserver {
         Log.d(TAG, "onResume")
 
         handler.postDelayed(GetWeatherRunnable(), DELAY.toLong())
+        handler.postDelayed(GetWeatherTableRunnable(), DELAY.toLong())
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
@@ -32,12 +33,28 @@ class WeatherUpdater(private val service: WeatherService): LifecycleObserver {
 
     inner class GetWeatherRunnable : Runnable {
         override fun run() {
-            service.getWeather().enqueue(object : Callback<Weather> {
+
+            service.getData().enqueue(object : Callback<Weather> {
                 override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
                     handler.postDelayed(GetWeatherRunnable(), DELAY.toLong())
                 }
 
                 override fun onFailure(call: Call<Weather>, t: Throwable) {
+
+                }
+            })
+        }
+    }
+
+    inner class GetWeatherTableRunnable : Runnable {
+        override fun run() {
+
+            service.getTableData().enqueue(object : Callback<List<Weather>> {
+                override fun onResponse(call: Call<List<Weather>>, response: Response<List<Weather>>) {
+                    handler.postDelayed(GetWeatherTableRunnable(), DELAY.toLong())
+                }
+
+                override fun onFailure(call: Call<List<Weather>>, t: Throwable) {
 
                 }
             })

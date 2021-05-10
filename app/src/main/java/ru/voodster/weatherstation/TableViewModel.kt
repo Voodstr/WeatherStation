@@ -7,35 +7,36 @@ import androidx.lifecycle.ViewModel
 import ru.voodster.weatherstation.weatherapi.Weather
 import ru.voodster.weatherstation.weatherapi.WeatherInteractor
 
-class WeatherViewModel : ViewModel() {
-
+class TableViewModel:ViewModel() {
     init {
-        Log.d("viewModel", this.toString())
+        Log.d("INDICATION viewModel", this.toString())
     }
-    private val weatherLiveData = MutableLiveData<Weather>()
+    private val tableWeatherLiveData = MutableLiveData<List<Weather>>()
     private val errorLiveData = MutableLiveData<String>()
 
     // LiveData -> BehaviourSubject
 
     private val weatherInteractor = App.instance!!.weatherInteractor
 
-    val weather: LiveData<Weather>
-        get() = weatherLiveData
+    val tableWeather: LiveData<List<Weather>>
+        get() = tableWeatherLiveData
 
     val error: LiveData<String>
         get() = errorLiveData
 
 
-    fun onGetDataClick() {
-        weatherInteractor?.getWeather( object : WeatherInteractor.GetWeatherCallback {
-            override fun onSuccess(weather: Weather) {
-                weatherLiveData.postValue(weather)
+    fun onGetTable() {
+        weatherInteractor.getWeatherTable( object : WeatherInteractor.GetWeatherTableCallBack {
+            override fun onSuccess(tableWeather: List<Weather>) {
+                Log.d("TABLE onGetTable", "start")
+                tableWeatherLiveData.postValue(tableWeather)
+                Log.d("TABLE onGetTable", "$tableWeather")
             }
 
             override fun onError(error: String) {
                 errorLiveData.postValue(error)
+                Log.d("TABLE onGetTable", "weatherERROR")
             }
         })
     }
-
 }

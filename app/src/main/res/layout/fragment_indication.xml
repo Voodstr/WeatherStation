@@ -9,6 +9,11 @@
     android:background="@color/black"
     android:padding="10dp"
     tools:context=".IndicationFragment">
+    <ProgressBar
+        android:id="@+id/ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/topCardView"
