@@ -9,7 +9,14 @@ import kotlin.math.log
 class WeatherInteractor(private val weatherService: WeatherService, private val weatherData: WeatherData) {
 
 
-
+    /**
+     * Get weather
+     * Асинхронное получение данных.
+     * enqueue - ставит в очередь и уведомляет обьект о выполнении
+     * onResponse -  успешное соединение ответ приходит в указанном виде (Weather)
+     * onFailure - ошибка
+     * @param callback
+     */
     fun getWeather( callback: GetWeatherCallback) {
 
         weatherService.getData().enqueue(object : Callback<Weather> {
@@ -28,6 +35,11 @@ class WeatherInteractor(private val weatherService: WeatherService, private val 
         })
     }
 
+    /**
+     * Get weather table
+     * Тоже самое только для таблицы значений
+     * @param callback
+     */
     fun getWeatherTable(callback: GetWeatherTableCallBack) {
 
         weatherService.getTableData().enqueue(object : Callback<List<Weather>> {
