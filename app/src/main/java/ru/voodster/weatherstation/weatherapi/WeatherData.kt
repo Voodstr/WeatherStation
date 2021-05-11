@@ -23,6 +23,7 @@ class WeatherData {
         this.curWeather = weather
     }
     fun addToTable(weatherTable : List<Weather>){
+        this.tableWeather.clear()
         this.tableWeather.addAll(weatherTable)
     }
 }

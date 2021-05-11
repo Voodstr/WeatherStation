@@ -1,12 +1,14 @@
 package ru.voodster.weatherstation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.weatherstation.databinding.FragmentIndicationBinding
@@ -23,7 +25,7 @@ class TableFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-    private val tableVM:TableViewModel by viewModels()
+    private val tableVM:TableViewModel by activityViewModels()
     private var recyclerView: RecyclerView? = null
     private var adapter : WeatherTableAdapter? = null
 
@@ -39,9 +41,9 @@ class TableFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentTableBinding.inflate(inflater, container, false)
-        binding.updateBtn.setOnClickListener {
-            tableVM.onGetTable()
-        }
+        //binding.updateBtn.setOnClickListener {
+       //     tableVM.onGetTable()
+        //}
         return binding.root
     }
 
@@ -52,15 +54,18 @@ class TableFragment : Fragment() {
 
     private fun initRecycler() {
         recyclerView = requireView().findViewById(R.id.TableRV)
-        recyclerView!!.adapter =  WeatherTableAdapter(LayoutInflater.from(context))
+        adapter =  WeatherTableAdapter(LayoutInflater.from(context))
+        recyclerView!!.adapter = adapter
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-
-        tableVM.tableWeather.observe(viewLifecycleOwner,  { table -> adapter?.setItems(table)})
+        initRecycler()
+        tableVM.onGetTable()
+        tableVM.tableWeather.observe(viewLifecycleOwner,  { table ->
+            Log.d("UI update table","$table")
+            adapter?.setItems(table)})
         tableVM.error.observe(viewLifecycleOwner,  { error ->
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         })
@@ -70,7 +75,8 @@ class TableFragment : Fragment() {
     class WeatherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(weather: Weather) {
-            itemView.findViewById<TextView>(R.id.tempTv).text = "${weather.temp.toString()} °C"
+            itemView.findViewById<TextView>(R.id.tempTv).text =
+                "${weather.temp.toDouble().div(10).toString()} °C"
             itemView.findViewById<TextView>(R.id.humTv).text = "${weather.hum.toString()}%"
             val sdf = SimpleDateFormat("HH:mm", Locale.ROOT)
             itemView.findViewById<TextView>(R.id.dateTv).text = sdf.format(Date(weather.date.toLong().times(1000)))
@@ -81,7 +87,9 @@ class TableFragment : Fragment() {
     class WeatherTableAdapter(private val inflater: LayoutInflater) : RecyclerView.Adapter<WeatherViewHolder>() {
         private val items = ArrayList<Weather>()
 
+
         fun setItems(tableWeather: List<Weather>) {
+            Log.d("UI setItems", "${tableWeather}")
             items.clear()
             items.addAll(tableWeather)
 

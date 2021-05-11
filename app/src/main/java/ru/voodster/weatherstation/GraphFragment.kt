@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import ru.voodster.weatherstation.R
 import ru.voodster.weatherstation.databinding.ActivityMainBinding
+import ru.voodster.weatherstation.databinding.FragmentGraphBinding
 
 class GraphFragment : Fragment() {
 
-    private var binding : ActivityMainBinding? =null
+    private var _binding : FragmentGraphBinding? =null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,10 +23,11 @@ class GraphFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_graph, container, false)
+        _binding = FragmentGraphBinding.inflate(inflater, container, false)
+        return binding.root
     }
     override fun onDestroyView() {
-        binding = null
+        _binding = null
         super.onDestroyView()
     }
 }

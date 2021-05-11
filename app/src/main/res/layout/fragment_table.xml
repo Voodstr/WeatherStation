@@ -11,20 +11,24 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/TableRV"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/updateBtn"
-        tools:itemCount="50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_weather"
+        tools:itemCount="20"
         android:layout_height="wrap_content" />
-    <Button
+
+    <!--<Button
         android:id="@+id/updateBtn"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:text="update"
-        android:textSize="40dp"
+        android:text="@string/update"
+        android:textSize="40sp"
         android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        /> -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

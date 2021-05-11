@@ -9,7 +9,7 @@ import ru.voodster.weatherstation.weatherapi.WeatherInteractor
 
 class TableViewModel:ViewModel() {
     init {
-        Log.d("INDICATION viewModel", this.toString())
+        Log.d("Table viewModel", this.toString())
     }
     private val tableWeatherLiveData = MutableLiveData<List<Weather>>()
     private val errorLiveData = MutableLiveData<String>()
@@ -28,9 +28,8 @@ class TableViewModel:ViewModel() {
     fun onGetTable() {
         weatherInteractor.getWeatherTable( object : WeatherInteractor.GetWeatherTableCallBack {
             override fun onSuccess(tableWeather: List<Weather>) {
-                Log.d("TABLE onGetTable", "start")
+                Log.d("TABLE onGetTable", "success")
                 tableWeatherLiveData.postValue(tableWeather)
-                Log.d("TABLE onGetTable", "$tableWeather")
             }
 
             override fun onError(error: String) {
