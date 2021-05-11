@@ -24,7 +24,11 @@ class TableViewModel:ViewModel() {
     val error: LiveData<String>
         get() = errorLiveData
 
-
+    /**
+     * On get table
+     *  Обработчик получения данных из api
+     *  так же помещаются в liveData
+     */
     fun onGetTable() {
         weatherInteractor.getWeatherTable( object : WeatherInteractor.GetWeatherTableCallBack {
             override fun onSuccess(tableWeather: List<Weather>) {

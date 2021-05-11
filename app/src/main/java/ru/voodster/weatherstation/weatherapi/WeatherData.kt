@@ -9,17 +9,17 @@ class WeatherData {
     private val fakeTable  = arrayListOf<Weather>(fakeWeather,fakeWeather,fakeWeather)
 
 
-    val cachedOrFakeWeather: Weather
-        get() = curWeather ?: fakeWeather
+    val cachedOrFakeWeather: Weather  // возвращаем либо действительные данные либо подменяем их на пустые
+        get() = curWeather ?: fakeWeather // чтобы не возвращать null
 
 
-    val cachedOrFakeTable: List<Weather>
+    val cachedOrFakeTable: List<Weather> // тоже самое но для таблицы(списка)
         get() = if (tableWeather.size > 0 )
             tableWeather
         else
             fakeTable
 
-    fun addToCache(weather: Weather) {
+    fun addToCache(weather: Weather) { //
         this.curWeather = weather
     }
     fun addToTable(weatherTable : List<Weather>){

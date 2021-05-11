@@ -32,7 +32,12 @@ class IndicationViewModel : ViewModel() {
     val error: LiveData<String>
         get() = errorLiveData
 
-
+    /**
+     * On get data
+     * Обработчик получения погоды
+     * если успешно до добавляем их в livedata<Weather>
+     *     за кооторым уже следит view
+     */
     fun onGetData() {
         weatherInteractor.getWeather( object : WeatherInteractor.GetWeatherCallback {
             override fun onSuccess(weather: Weather) {
