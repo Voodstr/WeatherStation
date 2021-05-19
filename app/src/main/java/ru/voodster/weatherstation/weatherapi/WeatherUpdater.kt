@@ -9,12 +9,20 @@ import androidx.lifecycle.OnLifecycleEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import ru.voodster.weatherstation.App
 
 class WeatherUpdater(private val service: WeatherService): LifecycleObserver {
 
     private val handler = Handler(Looper.getMainLooper())
 
 
+/*
+    fun setLifecycle(lifecycle: Lifecycle) {
+        if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)){
+            lifecycle.addObserver(App.instance!!.weatherUpdater)
+        }
+    }
+*/
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onLifecycleResume() {

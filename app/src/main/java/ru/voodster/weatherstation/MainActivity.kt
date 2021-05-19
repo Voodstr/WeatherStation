@@ -16,8 +16,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        lifecycle.addObserver(App.instance!!.weatherUpdater)
+        //App.instance!!.weatherUpdater.setLifecycle(lifecycle)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
