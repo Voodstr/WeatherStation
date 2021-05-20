@@ -26,6 +26,7 @@ class IndicationViewModel : ViewModel() {
 
     private val weatherInteractor = App.instance!!.weatherInteractor
 
+
     val weather: LiveData<Weather>
         get() = weatherLiveData
 

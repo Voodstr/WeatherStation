@@ -9,11 +9,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
-import ru.voodster.weatherstation.databinding.FragmentIndicationBinding
 import ru.voodster.weatherstation.databinding.FragmentTableBinding
-
 import ru.voodster.weatherstation.weatherapi.Weather
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,9 +27,6 @@ class TableFragment : Fragment() {
     private var adapter : WeatherTableAdapter? = null
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,9 +69,8 @@ class TableFragment : Fragment() {
     class WeatherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(weather: Weather) { // привязываем данные к нашей строчке в таблице
-            itemView.findViewById<TextView>(R.id.tempTv).text =
-                "${weather.temp.toDouble().div(10).toString()} °C"
-            itemView.findViewById<TextView>(R.id.humTv).text = "${weather.hum.toString()}%"
+            itemView.findViewById<TextView>(R.id.tempTv).text = weather.temp.toDouble().div(10).toString().plus("°C")
+            itemView.findViewById<TextView>(R.id.humTv).text = weather.hum.toString().plus("%")
             val sdf = SimpleDateFormat("HH:mm", Locale.ROOT)
             itemView.findViewById<TextView>(R.id.dateTv).text = sdf.format(Date(weather.date.toLong().times(1000)))
             itemView.findViewById<TextView>(R.id.pressTv).text = weather.press.toString()
@@ -95,7 +88,7 @@ class TableFragment : Fragment() {
 
 
         fun setItems(tableWeather: List<Weather>) {  // передаем чюда нашу таблицу и добавляем все данные
-            Log.d("UI setItems", "${tableWeather}")
+            Log.d("UI setItems", "$tableWeather")
             items.clear()
             items.addAll(tableWeather)
 

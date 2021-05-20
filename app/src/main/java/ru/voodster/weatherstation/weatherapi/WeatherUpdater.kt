@@ -9,7 +9,6 @@ import androidx.lifecycle.OnLifecycleEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.voodster.weatherstation.App
 
 class WeatherUpdater(private val service: WeatherService): LifecycleObserver {
 

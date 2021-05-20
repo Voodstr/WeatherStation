@@ -2,14 +2,12 @@ package ru.voodster.weatherstation
 
 import android.graphics.Color
 import android.os.Bundle
-
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-
 import ru.voodster.weatherstation.databinding.FragmentIndicationBinding
 import ru.voodster.weatherstation.weatherapi.Weather
 import java.text.SimpleDateFormat
@@ -25,9 +23,6 @@ class IndicationFragment : Fragment() {
 
     private var weatherNum = Weather(0,0,0,0,0,0)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,8 +39,8 @@ class IndicationFragment : Fragment() {
     private fun setWeather(weather: Weather){
         weatherNum = weather
         val sdf = SimpleDateFormat("dd/MM HH:mm", Locale.ROOT)
-        binding.humView.text = "${weatherNum.hum.toString()} %"
-        binding.tempView.text = (weatherNum.temp.toDouble().div(10.0)).toString() +" °C"
+        binding.humView.text = weatherNum.hum.toString().plus("%")
+        binding.tempView.text = (weatherNum.temp.toDouble().div(10.0)).toString().plus("°C")
         binding.pressView.text = weatherNum.press.toString()
         binding.dateView.text = sdf.format(Date(weatherNum.date.toLong().times(1000)))
         if (weatherNum.temp >= 0) {
