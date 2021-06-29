@@ -2,21 +2,24 @@
     <string name="app_name">WeatherStation</string>
     <string name="hello_blank_fragment">Fragment</string>
     <string name="update">Update</string>
-    <string name="navTitleIndication">Current Weather</string>
-    <string name="navTitleTable">Weather Table</string>
-    <string name="navTitleGraph">Weather Graphics</string>
+
+    <string name="navTitleIndication">Weather</string>
+    <string name="navTitleTable">Table</string>
+    <string name="navTitleGraph">Graphics</string>
+    <string name="navTitleSettings">Settings</string>
+
     <string name="exitDialogTitle">Exit</string>
     <string name="exitDialogText">Do you want to exit the app?</string>
     <string name="yesBtn">Yes</string>
 
     <!-- Preference Titles -->
-    <string name="UI_header">UI</string>
+    <string name="UI_header">UI settings</string>
 
     <!-- UI Preferences -->
     <string name="weather_url_title">WeatherApiURL</string>
     <string name="imgUpdate_title">Update Weather Image</string>
     <string name="URL_hint">Start with \"https:/\" end with \"/\"</string>
-    <string name="navTitleSettings">Settings</string>
+
 
 
 </resources>

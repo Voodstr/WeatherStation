@@ -12,8 +12,9 @@ class WeatherRepository @Inject constructor(
     private val api: WeatherService
 ) {
 
-    private var curWeather: WeatherModel? = null
+
     private val fakeWeather = WeatherModel(0,0,0,0,0,0)
+    private var curWeather: WeatherModel = fakeWeather
 
     private val tableWeather = ArrayList<WeatherModel>()
     private val fakeTable  = arrayListOf(fakeWeather,fakeWeather,fakeWeather)
@@ -24,15 +25,34 @@ class WeatherRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe( { r ->
                 run {
-                    callback.onSuccess(r)
+                    curWeather = r
+                    callback.onSuccess(curWeather)
                 }
             },{ error ->
             callback.onError(error.localizedMessage)
         })
     }
 
+    fun getTableWeather(callback: GetTableWeatherCallback){
+        api.getTableData(20)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe( { r ->
+                run {
+                    tableWeather.addAll(r)
+                    callback.onSuccess(tableWeather)
+                }
+            },{ error ->
+                callback.onError(error.localizedMessage)
+            })
+    }
+
     interface GetWeatherCallback{
         fun onSuccess(result: WeatherModel)
+        fun onError(error:String?)
+    }
+    interface GetTableWeatherCallback{
+        fun onSuccess(result: List<WeatherModel>)
         fun onError(error:String?)
     }
 }

@@ -24,6 +24,11 @@ class WeatherViewModel : ViewModel() {
     val currentWeather : LiveData<WeatherModel>
         get() = currentWeatherLiveData
 
+
+    private val tableWeatherLiveData = MutableLiveData<List<WeatherModel>>()
+    val tableWeather : LiveData<List<WeatherModel>>
+        get() = tableWeatherLiveData
+
     val errorMsg = SingleLiveEvent<String>()
 
     fun getCurrentWeather(){
@@ -38,6 +43,19 @@ class WeatherViewModel : ViewModel() {
         })
     }
 
+
+    fun getTableWeather(){
+        weatherRepository.getTableWeather(object: WeatherRepository.GetTableWeatherCallback{
+            override fun onSuccess(result: List<WeatherModel>) {
+                tableWeatherLiveData.postValue(result)
+            }
+
+            override fun onError(error: String?) {
+                errorMsg.postValue(error?:"Unknown Error")
+            }
+
+        })
+    }
 
 
 }

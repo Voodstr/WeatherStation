@@ -57,26 +57,33 @@ class TableFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        recyclerView = requireView().findViewById(R.id.TableRV) // находим RecylerView  в layout XML
+        recyclerView = requireView().findViewById(R.id.tableRV) // находим RecylerView  в layout XML
         adapter =  WeatherTableAdapter(LayoutInflater.from(context)) // Создаем адаптер для элементов списка
         recyclerView!!.adapter = adapter // передаем адаптер нашему RecyclerView
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         initRecycler() // инициализируем список
+        viewModel.getTableWeather()
+        viewModel.tableWeather.observe(viewLifecycleOwner){
+            adapter!!.setItems(it)
+        }
+        binding.tableSwipeUpdate.setOnRefreshListener {
+            viewModel.getTableWeather()
+            binding.tableSwipeUpdate.isRefreshing = false
+        }
     }
 
 
     class WeatherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(weatherModel: WeatherModel) { // привязываем данные к нашей строчке в таблице
-            itemView.findViewById<TextView>(R.id.tempTv).text = weatherModel.temp.toDouble().div(10).toString().plus("°C")
-            itemView.findViewById<TextView>(R.id.humTv).text = weatherModel.hum.toString().plus("%")
+            itemView.findViewById<TextView>(R.id.itemTempTv).text = weatherModel.temp.toDouble().div(10).toString().plus("°C")
+            itemView.findViewById<TextView>(R.id.itemHumTv).text = weatherModel.hum.toString().plus("%")
             val sdf = SimpleDateFormat("HH:mm", Locale.ROOT)
-            itemView.findViewById<TextView>(R.id.dateTv).text = sdf.format(Date(weatherModel.date.toLong().times(1000)))
-            itemView.findViewById<TextView>(R.id.pressTv).text = weatherModel.press.toString()
+            itemView.findViewById<TextView>(R.id.itemDateTv).text = sdf.format(Date(weatherModel.date.toLong().times(1000)))
+            itemView.findViewById<TextView>(R.id.itemPressTv).text = weatherModel.press.toString()
         }
     }
 
@@ -94,7 +101,6 @@ class TableFragment : Fragment() {
             Log.d("UI setItems", "$tableWeather")
             items.clear()
             items.addAll(tableWeather)
-
             notifyDataSetChanged() // уведомляем что надо перерисовать таблицу
         }
 

@@ -41,22 +41,36 @@ class IndicationFragment : Fragment() {
         }
         viewModel.getCurrentWeather()
         viewModel.currentWeather.observe(viewLifecycleOwner, { weather ->
-            setWeather(weather)
+            setViews(weather)
         })
         viewModel.errorMsg.observe(viewLifecycleOwner, { error -> Toast.makeText(context, error, Toast.LENGTH_SHORT).show()})
     }
 
 
-    private fun setWeather(weatherModel: WeatherModel){
+    private fun setViews(weatherModel: WeatherModel){
         weatherNum = weatherModel
         val sdf = SimpleDateFormat("dd/MM HH:mm", Locale.ROOT)
         binding.curHumTV.text = weatherNum.hum.toString().plus("%")
         binding.curTempTV.text = (weatherNum.temp.toDouble().div(10.0)).toString().plus("°C")
         binding.curPressTV.text = weatherNum.press.toString().plus(" мм.")
         binding.curDateTv.text = sdf.format(Date(weatherNum.date.toLong().times(1000)))
+        setTempColor()
+        setBackground()
+    }
+
+    private fun setTempColor(){
         if (weatherNum.temp >= 0) {
             binding.curTempTV.setTextColor(resources.getColor(R.color.tempHot, context?.applicationContext?.theme))
         } else binding.curTempTV.setTextColor(resources.getColor(R.color.tempCold, context?.applicationContext?.theme))
+    }
+
+    fun setBackground(){
+        when (Calendar.getInstance().get(Calendar.MONTH).plus(1)){
+            12,1,2 -> binding.indicationLayout.setBackgroundResource(R.drawable.winter)
+            3,4,5 -> binding.indicationLayout.setBackgroundResource(R.drawable.spring)
+            6,7,8 -> binding.indicationLayout.setBackgroundResource(R.drawable.summer)
+            9,10,11 -> binding.indicationLayout.setBackgroundResource(R.drawable.autumn)
+        }
     }
 
     override fun onCreateView(

@@ -10,8 +10,7 @@
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/viewBackgroundColor</item>
         <!-- Customize your theme here. -->
-        <item name="android:backgroundTint">#80D8FF</item>
     </style>
 </resources>
