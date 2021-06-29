@@ -4,93 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeUpdate"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/indicationLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/rainy_weather"
-        android:padding="20dp"
-        tools:context=".IndicationFragment">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/tempCard"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:cardBackgroundColor="@color/cardBackgroundColor"
-            app:cardCornerRadius="20dp"
-            app:layout_constraintBottom_toTopOf="@id/humCard"
-            app:layout_constraintEnd_toStartOf="@id/pressCard"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/tempView"
-                style="@style/textViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:text="Temperature" />
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/pressCard"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/cardBackgroundColor"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tempCard"
+        tools:context=".indication.IndicationFragment">
+        <TextView
+            android:id="@+id/curTempTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="100sp"
+            app:layout_constraintBottom_toTopOf="@id/curDateTv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/dateCard"
-            >
-            <TextView
-                android:id="@+id/pressView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:text="Pressure"
-                style="@style/textViewStyle"
-                />
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/humCard"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/cardBackgroundColor"
-            app:layout_constraintTop_toBottomOf="@id/tempCard"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/dateCard">
-            <TextView
-                android:id="@+id/humView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:text="Humidity"
-                style="@style/textViewStyle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Temp" />
 
-                />
-        </androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/curDateTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/secondaryLinear"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/curTempTV"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Date Date Date Date Date Date" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/dateCard"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/cardBackgroundColor"
-            app:layout_constraintTop_toBottomOf="@id/pressCard"
+        <LinearLayout
+            android:id="@+id/secondaryLinear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/humCard"
-            app:layout_constraintEnd_toEndOf="parent">
-            <TextView
-                android:id="@+id/dateView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:text="Date"
-                style="@style/textViewStyle"
-                />
-        </androidx.cardview.widget.CardView>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/curDateTv"
+            app:layout_constraintVertical_chainStyle="packed">
 
+            <TextView
+                android:id="@+id/curPressTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:padding="10dp"
+                android:textSize="30sp"
+                tools:text="Pres" />
+
+            <TextView
+                android:id="@+id/curHumTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="350dp"
+                android:padding="10dp"
+                android:textSize="30sp"
+                tools:text="Hum" />
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

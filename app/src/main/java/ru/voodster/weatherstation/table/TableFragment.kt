@@ -1,4 +1,4 @@
-package ru.voodster.weatherstation
+package ru.voodster.weatherstation.table
 
 import android.os.Bundle
 import android.util.Log
@@ -6,23 +6,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import ru.voodster.weatherstation.R
+import ru.voodster.weatherstation.WeatherViewModel
 import ru.voodster.weatherstation.databinding.FragmentTableBinding
-import ru.voodster.weatherstation.weatherapi.Weather
+import ru.voodster.weatherstation.weatherapi.WeatherModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class TableFragment : Fragment() {
 
+    companion object{
+        const val TAG = "TableFragment"
+        fun newInstance(): TableFragment {
+            return TableFragment()
+        }
+
+    }
+
     private var _binding : FragmentTableBinding? =null
     private val binding get() = _binding!!
 
 
-    private val tableVM:TableViewModel by activityViewModels()
+    private val viewModel: WeatherViewModel by activityViewModels()
+
     private var recyclerView: RecyclerView? = null
     private var adapter : WeatherTableAdapter? = null
 
@@ -56,24 +66,17 @@ class TableFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         initRecycler() // инициализируем список
-        tableVM.onGetTable() // запрашиваем данные при создании фрагмента
-        tableVM.tableWeather.observe(viewLifecycleOwner,  { table ->   // Подписываемся на обновление данных
-            Log.d("UI update table","$table")
-            adapter?.setItems(table)}) // Передаем данные в нашу таблицу
-        tableVM.error.observe(viewLifecycleOwner,  { error -> // Показываем ошибку если есть даненые об ошибке
-            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
-        })
     }
 
 
     class WeatherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(weather: Weather) { // привязываем данные к нашей строчке в таблице
-            itemView.findViewById<TextView>(R.id.tempTv).text = weather.temp.toDouble().div(10).toString().plus("°C")
-            itemView.findViewById<TextView>(R.id.humTv).text = weather.hum.toString().plus("%")
+        fun bind(weatherModel: WeatherModel) { // привязываем данные к нашей строчке в таблице
+            itemView.findViewById<TextView>(R.id.tempTv).text = weatherModel.temp.toDouble().div(10).toString().plus("°C")
+            itemView.findViewById<TextView>(R.id.humTv).text = weatherModel.hum.toString().plus("%")
             val sdf = SimpleDateFormat("HH:mm", Locale.ROOT)
-            itemView.findViewById<TextView>(R.id.dateTv).text = sdf.format(Date(weather.date.toLong().times(1000)))
-            itemView.findViewById<TextView>(R.id.pressTv).text = weather.press.toString()
+            itemView.findViewById<TextView>(R.id.dateTv).text = sdf.format(Date(weatherModel.date.toLong().times(1000)))
+            itemView.findViewById<TextView>(R.id.pressTv).text = weatherModel.press.toString()
         }
     }
 
@@ -84,10 +87,10 @@ class TableFragment : Fragment() {
      * @constructor Create empty Weather table adapter
      */
     class WeatherTableAdapter(private val inflater: LayoutInflater) : RecyclerView.Adapter<WeatherViewHolder>() {
-        private val items = ArrayList<Weather>()
+        private val items = ArrayList<WeatherModel>()
 
 
-        fun setItems(tableWeather: List<Weather>) {  // передаем чюда нашу таблицу и добавляем все данные
+        fun setItems(tableWeather: List<WeatherModel>) {  // передаем чюда нашу таблицу и добавляем все данные
             Log.d("UI setItems", "$tableWeather")
             items.clear()
             items.addAll(tableWeather)

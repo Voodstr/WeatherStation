@@ -1,68 +1,109 @@
 package ru.voodster.weatherstation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.util.Log
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import ru.voodster.weatherstation.databinding.ActivityMainBinding
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
-
-import java.util.*
+import ru.voodster.weatherstation.graphics.GraphFragment
+import ru.voodster.weatherstation.indication.IndicationFragment
+import ru.voodster.weatherstation.table.TableFragment
 
 
 class MainActivity : AppCompatActivity() {
+
+    companion object{
+        const val TAG = "MainActivity"
+    }
+
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewPager: ViewPager2
 
-
+    val viewModel:WeatherViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-        lifecycle.addObserver(App.instance!!.weatherUpdater)
-        //App.instance!!.weatherUpdater.setLifecycle(lifecycle)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewPager = binding.pager
-
-        val  pagerAdapter = ScreenSlidePagerAdapter(this)
-        pagerAdapter.addFragment(IndicationFragment())
-        pagerAdapter.addFragment(TableFragment())
-        pagerAdapter.addFragment(GraphFragment())
-
-        viewPager.adapter=pagerAdapter
-
-
+        bindViews()
+        openWeather()
     }
 
 
-    private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
-        private val fragmentList: MutableList<Fragment> = ArrayList()
+    private fun bindViews(){
+        setNavigationBar()
+    }
 
-        override fun createFragment(position: Int): Fragment {
-                return fragmentList[position]
+    private fun setNavigationBar(){
+        binding.bottomNavigation.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.nav_indication -> openWeather()
+                R.id.nav_table -> openTable()
+                R.id.nav_graph -> openGraph()
+                R.id.nav_settings -> openSettings()
+            }
+            true
         }
+    }
 
-        override fun getItemCount(): Int {
-            return fragmentList.size
-        }
+    private fun openGraph() {
+        Log.d(TAG,"openGraph")
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.enter_right_toleftt,R.anim.exit_left_toright)
+            .replace(R.id.fragmentContainer, GraphFragment.newInstance())
+            .commit()
+    }
 
-        fun addFragment(fragment: Fragment) {
-            fragmentList.add(fragment)
-        }
+    private fun openTable() {
+        Log.d(TAG,"openTable")
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.enter_right_toleftt,R.anim.exit_left_toright)
+            .replace(R.id.fragmentContainer, TableFragment.newInstance())
+            .commit()
+    }
 
-
-
-
+    private fun openWeather() {
+        Log.d(TAG,"openWeather")
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.enter_right_toleftt,R.anim.exit_left_toright)
+            .replace(R.id.fragmentContainer, IndicationFragment.newInstance())
+            .commit()
+    }
+    private fun openSettings() {
+        Log.d(TAG,"openSettings")
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.enter_right_toleftt,R.anim.exit_left_toright)
+            .replace(R.id.fragmentContainer, SettingsFragment.newInstance())
+            .commit()
     }
 
 
+    override fun onBackPressed() {
 
+        if (supportFragmentManager.backStackEntryCount>0){
+            supportFragmentManager.popBackStack()
+        }else{
+            val exitDialogBuilder = AlertDialog.Builder(this)
+            exitDialogBuilder.setTitle(R.string.exitDialogTitle)
+            exitDialogBuilder.setMessage(R.string.exitDialogText)
+            exitDialogBuilder.setCancelable(true)
+            exitDialogBuilder.setPositiveButton(R.string.yesBtn
+            ) { _, _ ->
+                super.onBackPressed()
+            }
+            val b = exitDialogBuilder.create()
+            b.show()
+        }
 
+    }
 
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+    }
 
 }

@@ -1,61 +1,48 @@
 package ru.voodster.weatherstation
 
 import android.app.Application
-import androidx.room.Room
-import com.google.gson.Gson
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import ru.voodster.weatherstation.db.WeatherDatabase
-import ru.voodster.weatherstation.weatherapi.WeatherData
-import ru.voodster.weatherstation.weatherapi.WeatherInteractor
-import ru.voodster.weatherstation.weatherapi.WeatherService
-import ru.voodster.weatherstation.weatherapi.WeatherUpdater
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 
 class App : Application() {
 
-    lateinit var weatherService: WeatherService
-    lateinit var weatherUpdater: WeatherUpdater
-    lateinit var weatherInteractor: WeatherInteractor
-    private var weatherData = WeatherData()
-    val db by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            WeatherDatabase::class.java,"wthr"
-        ).build()
+
+    companion object {
+        var instance: App? = null
+            private set
+
+        const val CHANNEL_WATCH = "Watch Later"
+
+        fun getPreferenceUrl():String?{
+            return instance?.getSharedPreferences("root_preferences.xml", MODE_PRIVATE)?.getString("weatherURL","https://db.shs.com.ru/")
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
 
         instance = this
+        createNotificationChannel()
 
-
-        initRetrofit()
-        initInteractor()
     }
 
-    private fun initInteractor() {
-        weatherInteractor = WeatherInteractor(weatherService, weatherData)
-    }
 
-    private fun initRetrofit() {
-
-        val okHttpClient = OkHttpClient.Builder()
-                .build()
-
-        weatherService = Retrofit.Builder()
-                .baseUrl("https://db.shs.com.ru/")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(Gson()))
-                .build()
-                .create(WeatherService::class.java)
-
-        weatherUpdater = WeatherUpdater(weatherService)
-    }
-
-    companion object {
-        var instance: App? = null
-            private set
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "WeatherStation"
+            val descriptionText = "WeatherStation"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channelWatch = NotificationChannel(CHANNEL_WATCH, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channelWatch)
+        }
     }
 }

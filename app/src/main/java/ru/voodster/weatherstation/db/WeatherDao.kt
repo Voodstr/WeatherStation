@@ -4,33 +4,13 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface WeatherDao {
-    @Query(
-        "SELECT * " +
-             "FROM wthr")
-    fun getAll(): List<WeatherE>
-    @Query(
-        "SELECT * " +
-            "FROM wthr " +
-            "WHERE Fav " +
-            "Like true"
-    )
-    fun getFav(): List<WeatherE>
 
-    @Query(
-        "UPDATE whtr " +
-            "SET Fav = true " +
-            "WHERE wid = :id ")
-    fun fav(id : Int)
-
-    @Query(
-        "UPDATE whtr " +
-            "SET Fav = false " +
-            "WHERE wid = :id "
-    )
-    fun unFav(id : Int)
+    @Query("SELECT * FROM weather_table limit :limit offset :offset ")
+    fun getWeather(offset:Int, limit:Int): Single<List<WeatherE>>
 
     @Insert
     fun insertAll(vararg users: WeatherE)
