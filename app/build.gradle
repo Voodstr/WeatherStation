@@ -6,6 +6,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        test {
+            storeFile file('C:\\Users\\Dimon\\key\\testJKS.jks')
+            storePassword 'test123'
+            keyAlias 'testkey'
+            keyPassword 'test123'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
@@ -25,6 +33,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.test
         }
     }
     compileOptions {
