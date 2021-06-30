@@ -39,6 +39,7 @@ class WeatherRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe( { r ->
                 run {
+                    tableWeather.clear()
                     tableWeather.addAll(r)
                     callback.onSuccess(tableWeather)
                 }
