@@ -6,11 +6,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.Component
 import ru.voodster.weatherstation.db.DbModule
+import ru.voodster.weatherstation.realm.WeatherObject
 import ru.voodster.weatherstation.weatherapi.ApiModule
 import ru.voodster.weatherstation.weatherapi.WeatherModel
 import javax.inject.Singleton
 
+@Component(modules = [ApiModule::class, DbModule::class])
+@Singleton
+interface ViewModelComponent {
 
+    fun repos(): WeatherRepository
+
+}
 
 class WeatherViewModel : ViewModel() {
     private val viewModelComponent=DaggerViewModelComponent.builder().build()
@@ -28,6 +35,10 @@ class WeatherViewModel : ViewModel() {
     private val tableWeatherLiveData = MutableLiveData<List<WeatherModel>>()
     val tableWeather : LiveData<List<WeatherModel>>
         get() = tableWeatherLiveData
+
+    private val chartWeatherLiveData = MutableLiveData<List<WeatherObject>>()
+    val chartWeather : LiveData<List<WeatherObject>>
+        get() = chartWeatherLiveData
 
     val errorMsg = SingleLiveEvent<String>()
 
@@ -58,12 +69,21 @@ class WeatherViewModel : ViewModel() {
     }
 
 
+    fun getChartWeather(){
+        weatherRepository.getChartWeather(object: WeatherRepository.GetChartWeatherCallback{
+            override fun onSuccess(result: List<WeatherObject>) {
+                chartWeatherLiveData.postValue(result)
+            }
+
+            override fun onError(error: String?) {
+                errorMsg.postValue(error?:"Unknown Error")
+            }
+
+        })
+    }
+
+
+
 }
 
-@Component(modules = [ApiModule::class, DbModule::class])
-@Singleton
-interface ViewModelComponent {
 
-    fun repos(): WeatherRepository
-
-}

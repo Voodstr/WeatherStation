@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+
     signingConfigs {
         test {
             storeFile file('C:\\Users\\Dimon\\key\\testJKS.jks')
@@ -46,7 +47,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.preference:preference-ktx:1.1.1'
 
 
     //room
@@ -93,5 +94,18 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:3.0.13"
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+
+    //realm
+    api "io.realm:realm-annotations:$realm_version"
+    api "io.realm:realm-android-library:$realm_version"
+    api "io.realm:realm-android-kotlin-extensions:$realm_version"
+    kapt "io.realm:realm-annotations-processor:$realm_version"
+
+    // Charts
+    //implementation 'com.github.PhilJay:MPAndroidChart-Realm:v3.1.0@aar'
+    //implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+
+
 
 }

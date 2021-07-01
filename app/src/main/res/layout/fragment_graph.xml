@@ -3,15 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".graphics.GraphFragment">
+    tools:context=".graphics.GraphFragment"
+    android:backgroundTint="@color/viewBackgroundColor">
 
-    <TextView
+
+    <com.db.williamchart.view.LineChartView
+        android:id="@+id/graphLineChartView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="40sp"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:text="Graph" />
-
+        android:layout_height="300dp"
+        app:chart_lineColor="@color/colorSecondary"
+        app:chart_lineThickness="5dp"
+        app:chart_smoothLine="true"
+    />
 </LinearLayout>
