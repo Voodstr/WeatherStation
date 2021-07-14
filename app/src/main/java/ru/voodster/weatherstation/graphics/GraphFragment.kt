@@ -44,17 +44,17 @@ class GraphFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.lineChart.setMaxVisibleValueCount(10)
         viewModel.getTableWeather()
         viewModel.tableWeather.observe(viewLifecycleOwner){
             chartData.clear()
             chartData.addAll(it)
+            fillTempChart(chartData,24)
+            binding.lineChart.invalidate()
         }
         binding.startHour.maxValue = 24
-        binding.endHour.maxValue = 24
         binding.chartLoad.setOnClickListener {
-            if (binding.startHour.value>0){
-                fillTempChart(chartData,binding.endHour.value,binding.startHour.value)
-            }else fillTempChart(chartData,binding.endHour.value)
+                fillTempChart(chartData,binding.startHour.value)
             binding.lineChart.invalidate()
         }
     }
@@ -71,27 +71,12 @@ class GraphFragment : Fragment() {
 
         }
         val dataSet = LineDataSet(entries,"temp")
-        dataSet.setColor(R.color.colorPrimary)
+        dataSet.color = R.color.colorPrimary
         val lineData = LineData(dataSet)
         binding.lineChart.data = lineData
         binding.lineChart.notifyDataSetChanged()
     }
 
-    private fun fillTempChart(data:List<WeatherModel>, startHours:Int, endHour:Int){
-        val entries = ArrayList<Entry>()
-        val start = data.first().date-(60*60*(24-startHours))
-        data.reversed().forEach {
-            when (val timeInSec = it.date - start){
-               in  0..(24-endHour).times(3600) -> entries.add(Entry(timeInSec.toFloat().div(3600.00.toFloat()),it.temp.toFloat().div(10)))
-            }
-
-        }
-        val dataSet = LineDataSet(entries,"temp")
-        dataSet.setColor(R.color.colorPrimary)
-        val lineData = LineData(dataSet)
-        binding.lineChart.data = lineData
-        binding.lineChart.notifyDataSetChanged()
-    }
 
     override fun onDestroyView() {
         _binding = null

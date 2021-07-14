@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/itemTempTv"
         tools:text="17:00"
-        android:textSize="20sp" />
+        android:textSize="20dp" />
 
 
     <TextView
@@ -28,7 +28,7 @@
         app:layout_constraintEnd_toStartOf="@id/itemPressTv"
         app:layout_constraintHorizontal_chainStyle="spread"
         tools:text="20°C"
-        android:textSize="50sp"
+        android:textSize="50dp"
         />
     <TextView
         android:id="@+id/itemHumTv"
@@ -39,7 +39,7 @@
         android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="50%"
-        android:textSize="20sp"
+        android:textSize="20dp"
         />
     <TextView
         android:id="@+id/itemPressTv"
@@ -50,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingEnd="20dp"
         tools:text="747"
-        android:textSize="20sp"
+        android:textSize="20dp"
 
         />
 
