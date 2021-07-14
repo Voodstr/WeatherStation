@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/itemDateTv"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/itemTempTv"
+        tools:text="17:00"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:id="@+id/itemTempTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/itemDateTv"
+        app:layout_constraintEnd_toStartOf="@id/itemPressTv"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        tools:text="20°C"
+        android:textSize="50dp"
+        />
+    <TextView
+        android:id="@+id/itemHumTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/itemPressTv"
+        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="50%"
+        android:textSize="20dp"
+        />
+    <TextView
+        android:id="@+id/itemPressTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/itemHumTv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingEnd="20dp"
+        tools:text="747"
+        android:textSize="20dp"
+
+        />
+
+    <ImageView
+        android:id="@+id/itemFilmShadow"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        app:layout_constraintTop_toBottomOf="@id/itemTempTv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/viewBackgroundColor"
+        tools:ignore="ContentDescription" />
+</androidx.constraintlayout.widget.ConstraintLayout>
