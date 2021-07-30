@@ -18,7 +18,7 @@ class ApiModule {
     @Provides
     fun provideApi(): WeatherService {
 
-        val url:String = App.getPreferenceUrl()?: "https://db.shs.com.ru/"
+        val url:String = App.getPreferenceUrl()?: "https://svn.signalmodelling.ru/"
         val okHttpClient = OkHttpClient.Builder()
             .build()
 
